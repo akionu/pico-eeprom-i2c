@@ -1,0 +1,1 @@
+add_subdirectory("ex01_simple_log")
