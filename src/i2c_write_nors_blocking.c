@@ -1,7 +1,7 @@
 #include "i2c_write_nors_blocking.h"
 
 // write without Repeated Start condition
-int i2c_write_nors_blocking(i2c_inst_t *i2c, uint8_t addr, const uint8_t *src, size_t len, bool nostop) {
+int i2c_write_nors_blocking(i2c_inst_t *i2c, uint8_t addr, const uint8_t *src, size_t len) {
 	
 	// send without a Repeated Start conditions between chunks
 	// code below originally comes from "pico-sdk/src/rp2_common/hardware_i2c/i2c.c"
@@ -79,5 +79,5 @@ int i2c_write_nors_blocking(i2c_inst_t *i2c, uint8_t addr, const uint8_t *src, s
 	i2c->restart_on_next = false;
 	// code originally from pico-sdk until here
 
-	return byte_ctr;
+	return len;
 }
