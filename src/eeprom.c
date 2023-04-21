@@ -1,9 +1,11 @@
 #include "eeprom.h"
 
+#if 0
 // overflow: 1, not: 0
 static uint8_t is_overflow_8(uint8_t regl, uint8_t len) {
     return (((regl & len) | ((regl | len) & ~(regl + len))) >> 7);
 }
+#endif
 
 static void eeprom_polling(i2c_inst_t *i2c, uint8_t addr) {
     #if 1

@@ -13,14 +13,15 @@ int main(void) {
     sleep_ms(3000);
     printf("\n\nhello, this is pico!\n");
 
+    // init i2c bus
     i2c_init(i2c1, 400 * 1000);
     gpio_set_function(I2C_SDA, GPIO_FUNC_I2C);
     gpio_set_function(I2C_SCL, GPIO_FUNC_I2C);
 
     static uint8_t rbuf[500] = {'0'};
-    uint8_t abuf[] = {0x00, 0x00};
     int16_t i;
 
+    // read
     int16_t ret = eeprom_read(i2c1, addr_eeprom, 0x0000, rbuf, 500);
     for (i = 1; i <= 500; i++) {
         printf("%2x ", rbuf[i-1]);
