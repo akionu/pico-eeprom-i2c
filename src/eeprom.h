@@ -6,6 +6,21 @@
 #include "i2c_write_nors_blocking.h"
 
 /**
+ * @def
+ * page size in bytes. mostly 128(=0x7f) or 256(=0xff) bytes.
+ * 
+*/
+#define BYTES_PER_PAGE (0x7F) // 128 bytes/page
+//#define BYTES_PER_PAGE (0xFF) // 256 bytes/page
+
+/**
+ * @def
+ * memory size of eeprom in bytes. reading/writing register over this limit, occurs error(return 0).
+ * 
+*/
+#define MAX_SIZE_BYTES (64000)
+
+/**
  * @brief write single byte to eeprom
  * 
  * @param i2c i2c bus

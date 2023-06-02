@@ -39,9 +39,10 @@ int8_t eeprom_write_single(i2c_inst_t *i2c, uint8_t addr, uint16_t reg, uint8_t 
 uint16_t eeprom_write_multi(i2c_inst_t *i2c, uint8_t addr, uint16_t reg, uint8_t *src, uint16_t len) {
     int16_t ret;
     uint8_t buf[2];
-    uint32_t reg_page_end = reg | 0x00FF;
+    uint32_t reg_page_end = reg | BYTES_PER_PAGE;
     uint16_t len_write = len;
     uint16_t pos = 0;
+    if ((reg + len) > MAX_SIZE_BYTES) return 0;
 #ifndef NDEBUG
     printf("reg_page_end: 0x%x, len_write: %d, pos: %d\n", reg_page_end, len_write, pos);
 #endif
@@ -49,8 +50,8 @@ uint16_t eeprom_write_multi(i2c_inst_t *i2c, uint8_t addr, uint16_t reg, uint8_t
 #ifndef NDEBUG
     printf("reg_page_end: 0x%x, reg: 0x%x, len_write: %d, pos: %d, ret: %d\n", reg_page_end, reg, len_write, pos, ret);
 #endif
-        if (reg + len_write - 1 > 0xFFFF) reg = 0x0000;
-        reg_page_end = reg | 0x00FF;
+        if (reg + len_write - 1 > MAX_SIZE_BYTES) reg = 0x0000;
+        reg_page_end = reg | BYTES_PER_PAGE;
         if (reg + len_write - 1 > reg_page_end) len_write = reg_page_end - reg + 1;
         buf[0] = reg >> 8; buf[1] = reg & 0xFF;
 #ifndef NDEBUG
@@ -71,6 +72,7 @@ uint16_t eeprom_write_multi(i2c_inst_t *i2c, uint8_t addr, uint16_t reg, uint8_t
 uint16_t eeprom_read(i2c_inst_t *i2c, uint8_t addr, uint16_t reg, uint8_t *dst, uint16_t len) {
     uint16_t ret;
     uint8_t buf[] = {reg >> 8, reg & 0xFF};
+    if ((reg + len) > MAX_SIZE_BYTES) return 0;
     eeprom_polling(i2c, addr);
     i2c_write_blocking(i2c, addr, buf, 2, true);
     ret = i2c_read_blocking(i2c, addr, dst, len, false);

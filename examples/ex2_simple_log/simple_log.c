@@ -3,8 +3,8 @@
 #include "hardware/i2c.h"
 #include "../../src/eeprom.h"
 
-#define I2C_SDA 14
-#define I2C_SCL 15
+#define I2C_SDA 2
+#define I2C_SCL 3
 
 uint8_t eeprom_addr = 0x50;
 
